@@ -8,7 +8,7 @@ import java.io.IOException;
 @PrototypeBean
 public class PrototypeModel extends AbstractModel {
 
-    public PrototypeModel(Resource testImageResource) throws IOException {
-        super(testImageResource);
+    public PrototypeModel(Resource testFile) throws IOException {
+        super(testFile);
     }
 }

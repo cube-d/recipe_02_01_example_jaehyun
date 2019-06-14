@@ -8,7 +8,7 @@ import java.io.IOException;
 @LazySingletonBean
 public class LazySingletoneModel extends AbstractModel {
 
-    public LazySingletoneModel(Resource testImageResource) throws IOException {
-        super(testImageResource);
+    public LazySingletoneModel(Resource testFile) throws IOException {
+        super(testFile);
     }
 }

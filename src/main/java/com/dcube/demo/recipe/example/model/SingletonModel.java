@@ -8,8 +8,8 @@ import java.io.IOException;
 
 @SingletonBean
 public class SingletonModel extends AbstractModel{
-    public SingletonModel(Resource testImageResource) throws IOException {
-        super(testImageResource);
+    public SingletonModel(Resource testFile) throws IOException {
+        super(testFile);
     }
 
 }

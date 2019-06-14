@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 @Component
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-@Dcube
 @Scope("prototype")
+@Dcube
 public @interface PrototypeBean {
 }

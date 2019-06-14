@@ -1,20 +1,16 @@
 package com.dcube.demo.recipe.example.controller;
 
 
-import com.dcube.demo.recipe.example.annotation.LazyPrototypeBean;
-import com.dcube.demo.recipe.example.annotation.LazySingletonBean;
-import com.dcube.demo.recipe.example.annotation.PrototypeBean;
-import com.dcube.demo.recipe.example.annotation.SingletonBean;
-import com.dcube.demo.recipe.example.model.LazyPrototypeModel;
-import com.dcube.demo.recipe.example.model.LazySingletoneModel;
-import com.dcube.demo.recipe.example.model.PrototypeModel;
-import com.dcube.demo.recipe.example.model.SingletonModel;
+import com.dcube.demo.recipe.example.annotation.*;
+import com.dcube.demo.recipe.example.model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,62 +18,56 @@ import java.util.List;
 @RestController
 public class BeanTestController {
 
+    private static final Logger logger = LoggerFactory.getLogger(BeanTestController.class);
 
     @Autowired
     ApplicationContext context;
 
 
     @GetMapping("/singletone")
-    public String makeSingletoneBean() throws IOException {
+    public String makeSingletoneBean() {
 
-        List modelList= new ArrayList();
-        for(int i=0 ;i <5; i++){
-
-            final SingletonModel model = (SingletonModel) context.getBeansWithAnnotation(SingletonBean.class).get("singletonModel");
-            modelList.add(model);
-            System.out.println(model.toString());
-        }
+        printModelHashCodeList(makeModelList(SingletonBean.class, "singletonModel"));
         return "singletone!";
     }
 
     @GetMapping("/lazysingletone")
-    public String makeLazySingletoneBean() throws IOException {
+    public String makeLazySingletoneBean() {
 
-        List modelList= new ArrayList();
-        for(int i=0 ;i <5; i++){
-            final LazySingletoneModel model = (LazySingletoneModel) context.getBeansWithAnnotation(LazySingletonBean.class).get("lazySingletoneModel");
-            modelList.add(model);
-            System.out.println(model.toString());
-        }
+        printModelHashCodeList(makeModelList(LazySingletonBean.class, "lazySingletoneModel"));
         return "lazysingletone!";
     }
 
     @GetMapping("/protype")
-    public String makePrototypeBean() throws IOException {
+    public String makePrototypeBean() {
 
-        List modelList= new ArrayList();
-        for(int i=0 ;i <5; i++){
-
-            final PrototypeModel model = (PrototypeModel) context.getBeansWithAnnotation(PrototypeBean.class).get("prototypeModel");
-            modelList.add(model);
-            System.out.println(model.toString());
-        }
-
+        printModelHashCodeList(makeModelList(PrototypeBean.class, "prototypeModel"));
         return "prototypeModel!";
     }
 
     @GetMapping("/lazyprotype")
-    public String makeLazyPrototypeBean() throws IOException {
+    public String makeLazyPrototypeBean() {
 
-        List modelList= new ArrayList();
+        printModelHashCodeList(makeModelList(LazyPrototypeBean.class, "lazyPrototypeModel"));
+        return "lazyprotype!";
+    }
+
+
+    private List makeModelList(Class<? extends Annotation> annotationType, String key){
+
+        List modelList = new ArrayList();
+
         for(int i=0 ;i <5; i++){
-
-            final LazyPrototypeModel model = (LazyPrototypeModel) context.getBeansWithAnnotation(LazyPrototypeBean.class).get("lazyPrototypeModel");
+            final AbstractModel model = (AbstractModel) context.getBeansWithAnnotation(annotationType).get(key);
             modelList.add(model);
-            System.out.println(model.toString());
         }
 
-        return "lazyprotype!";
+        return modelList;
+
+    }
+
+    private void printModelHashCodeList(List modelList){
+        modelList.stream().forEach(m -> logger.info("Model hashCode is {}", String.valueOf(m.hashCode())));
     }
 
 }

@@ -9,7 +9,7 @@ import java.io.IOException;
 @LazyPrototypeBean
 public class LazyPrototypeModel extends AbstractModel {
 
-    public LazyPrototypeModel(Resource testImageResource) throws IOException {
-        super(testImageResource);
+    public LazyPrototypeModel(Resource testFile) throws IOException {
+        super(testFile);
     }
 }
